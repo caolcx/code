@@ -1,0 +1,19 @@
+import xlrd,xlwt
+from xlutils.copy import copy
+#-----------定义获取出生日期的函数
+
+def age(id,dict):  #从指定的身份证号码中截取出生日期，并通过传入的dict分隔符将其拼接起来
+    l=[id[x:y] for x,y in ((6,10),(10,12),(12,14))]
+    date=dict.join(l)
+    return date
+
+#-----------
+workbook= xlrd.open_workbook('舞蹈系1.xls')  #打开指定excel工作簿
+worksheet=workbook.sheet_by_name('舞蹈系')  #打开指定excel中的工作表
+newworkbook=copy(workbook)   #copy指定的表格，不损坏原来的数据
+newworksheet=newworkbook.get_sheet('舞蹈系') #获取指定表格里面的sheet名
+r=0
+while r< worksheet.nrows-1:
+    r+=1
+    newworksheet.write(r,4,age(worksheet.cell_value(r,3),'/'))
+newworkbook.save('舞蹈系1.xls')   #将处理后的数据进行保存
